@@ -1,0 +1,57 @@
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "5556:80"
+    depends_on:
+      - php-fpm
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/html
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    environment:
+      MYSQL_DATABASE: twilio_service
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  nodejs:
+    build:
+      context: .
+      dockerfile: ./docker/nodejs/Dockerfile
+    volumes:
+      - .:/build
+    working_dir: /build
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    platform: linux/x86_64
+    ports:
+      - "4040:4040"
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command: "http nginx:80"
+    depends_on:
+      - nginx
+
+volumes:
+  mysql-data:
