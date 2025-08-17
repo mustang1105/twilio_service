@@ -39,6 +39,13 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
+        <!-- Font Awesome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <!-- Twilio Video JS SDK -->
+        <script src="https://sdk.twilio.com/js/video/releases/2.32.1/twilio-video.min.js"></script>
+        <!-- Twilio Processor JS -->
+        <script src="https://cdn.jsdelivr.net/npm/@twilio/video-processors@3.1.0/dist/build/twilio-video-processors.min.js"></script>
+
         @routes
         @viteReactRefresh
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
